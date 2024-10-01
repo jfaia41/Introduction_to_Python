@@ -1,54 +1,45 @@
-# Define main()
 def main():
-    plate = input("Plate: ")
+    plate = input("Plate: ").strip()
     if is_valid(plate):
         print("Valid")
     else:
         print("Invalid")
 
-# Define is_valid
+
 def is_valid(s):
+    return (check_length(s) and
+            check_start_with_two_letters(s) and
+            check_no_invalid_chars(s) and
+            check_numbers_position(s))
 
-    # Check if the license plate starts with at least two letters
-    if not starts_with_two_letters(s):
-        return False
 
-    # Check license plate length
-    if not has_valid_length(s):
-        return False
-    # Check if the numbers are at the end
-    if not numbers_at_end(s):
-        return False
+def check_length(s):
+    # Check if the length is between 2 and 6 characters
+    return 2 <= len(s) <= 6
 
-    # Check for invalid characters
-    if not numbers_at_end(s):
-        return False
 
+def check_start_with_two_letters(s):
+    # Check if the first two characters are letters
+    return s[0].isalpha() and s[1].isalpha()
+
+
+def check_no_invalid_chars(s):
+    # Check for only alphanumeric characters
+    return s.isalnum()
+
+
+def check_numbers_position(s):
+    # Find the first digit in the string
+    number_found = False
+    for i in range(len(s)):
+        if s[i].isdigit():
+            if s[i] == '0' and not number_found:
+                return False  # First number cannot be '0'
+            number_found = True
+        elif number_found:
+            return False  # If a letter appears after a number, it's invalid
     return True
 
 
-def starts_with_two_letters (s):
-    return len(s) >= 2 and s[0:2].isalpha()
-
-def has_valid_length (s):
-    return 2 <= len(s) <= 6
-
-def numbers_at_end(s):
-
-    # Find the first occurrence of a number
-    for index, char in enumerate(s):
-         if char.isdigit():
-             # Check if it is the first number and is not '0'
-             if index == 0 or (char == '0' and index == len(s) - 1):
-                 return False
-             #Check if there are any alphabetic characters after a number
-             if not s[index:].isdigit():
-                return False
-    return True     # If there are no numbers, it is valid
-
-def no_invalid_characters(s):
-    return all(c.isalnum() for c in s)
-
-# Run the program
 if __name__ == "__main__":
     main()
