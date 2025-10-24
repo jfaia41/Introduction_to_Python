@@ -24,5 +24,3 @@ elif file_name.endswith ('.zip'):
     print ('application/zip')
 else:
     print ('application/octet-stream')
-
-
